@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: socrata-chef-server
-# Recipe:: default
+# Library:: matchers
 #
 # Copyright 2016, Socrata, Inc.
 #
@@ -18,4 +18,16 @@
 # limitations under the License.
 #
 
-chef_server 'default'
+if defined?(ChefSpec)
+  {
+    chef_server: %i(create)
+  }.each do |matcher, actions|
+    ChefSpec.define_matcher(matcher)
+
+    actions.each do |action|
+      define_method("#{action}_#{matcher}") do |name|
+        ChefSpec::Matchers::ResourceMatcher.new(matcher, action, name)
+      end
+    end
+  end
+end

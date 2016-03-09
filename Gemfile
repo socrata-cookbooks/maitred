@@ -26,7 +26,6 @@ end
 
 group :integration do
   gem 'serverspec'
-  gem 'cucumber'
 end
 
 group :deploy do

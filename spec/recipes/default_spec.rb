@@ -7,7 +7,7 @@ describe 'socrata-chef-server::default' do
   let(:runner) { ChefSpec::SoloRunner.new(platform) }
   let(:chef_run) { runner.converge(described_recipe) }
 
-  it 'converges successfully' do
-    expect(chef_run).to be
+  it 'creates a chef_server' do
+    expect(chef_run).to create_chef_server('default')
   end
 end
