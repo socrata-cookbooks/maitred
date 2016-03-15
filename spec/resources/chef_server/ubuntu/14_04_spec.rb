@@ -30,6 +30,8 @@ describe 'resource_chef_server::ubuntu::14_04' do
     it 'symlinks the /etc/opscode directory' do
       expect(chef_run).to create_directory('/data/etc/opscode')
         .with(owner: 'opscode', group: 'opscode', recursive: true)
+      expect(chef_run).to create_directory('/data/etc/opscode/server.d')
+        .with(owner: 'opscode', group: 'opscode', recursive: true)
       expect(chef_run).to create_link('/etc/opscode')
         .with(to: '/data/etc/opscode')
     end
@@ -42,8 +44,15 @@ describe 'resource_chef_server::ubuntu::14_04' do
     end
 
     it 'installs the chef-server ingredient' do
+      expected = <<-EOH.gsub(/^ {8}/, '').strip
+        Dir.glob(
+          File.join('/etc/opscode', "server.d", "*.rb")
+        ).each do |conf|
+          Chef::Config.from_file(conf)
+        end
+      EOH
       expect(chef_run).to install_chef_ingredient('chef-server')
-        .with(config: "topology 'standalone'")
+        .with(config: expected)
     end
 
     it 'configures the chef-server ingredient' do

@@ -28,7 +28,6 @@ class Chef
     class ChefServer < Resource
       provides :chef_server
 
-      property :topology, String, default: 'standalone'
       property :opscode_user, String, default: 'opscode'
       property :opscode_uid, Fixnum, default: 142
       property :postgres_user, String, default: 'opscode-pgsql'
@@ -48,7 +47,7 @@ class Chef
           home '/opt/opscode/postgresql'
         end
         directory '/data'
-        %w(/etc/opscode /var/opt/opscode).each do |d|
+        %w(/etc/opscode /etc/opscode/server.d /var/opt/opscode).each do |d|
           directory ::File.join('/data', d) do
             owner opscode_user
             group opscode_user
@@ -60,7 +59,11 @@ class Chef
         end
         chef_ingredient 'chef-server' do
           config <<-EOH.gsub(/^ {12}/, '').strip
-            topology '#{topology}'
+            Dir.glob(
+              File.join('/etc/opscode', "server.d", "*.rb")
+            ).each do |conf|
+              Chef::Config.from_file(conf)
+            end
           EOH
         end
         ingredient_config 'chef-server' do
