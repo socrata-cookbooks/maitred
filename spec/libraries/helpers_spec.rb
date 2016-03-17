@@ -9,24 +9,27 @@ describe Maitred::Helpers do
     let(:config) { nil }
     let(:res) { described_class.component_config_for(component, config) }
 
+    shared_context 'a nil config' do
+      let(:config) { nil }
+
+      it 'returns an empty string' do
+        expect(res).to eq('')
+      end
+    end
+
+    shared_context 'an empty config' do
+      let(:config) { {} }
+
+      it 'returns an empty string' do
+        expect(res).to eq('')
+      end
+    end
+
     context 'an HA component' do
       let(:component) { :ha }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) do
@@ -55,21 +58,8 @@ describe Maitred::Helpers do
     context 'an Nginx component' do
       let(:component) { :nginx }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) do
@@ -94,21 +84,8 @@ describe Maitred::Helpers do
     context 'a Bookshelf component' do
       let(:component) { :bookshelf }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) { { vip: '1.2.3.4' } }
@@ -122,21 +99,8 @@ describe Maitred::Helpers do
     context 'an LDAP component' do
       let(:component) { :ldap }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) do
@@ -171,21 +135,8 @@ describe Maitred::Helpers do
     context 'an Opscode Account component' do
       let(:component) { :account }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) { { worker_processes: 90 } }
@@ -199,21 +150,8 @@ describe Maitred::Helpers do
     context 'an Opscode Erchef component' do
       let(:component) { :erchef }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) do
@@ -238,21 +176,8 @@ describe Maitred::Helpers do
     context 'an Opscode Expander component' do
       let(:component) { :expander }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) { { nodes: 9000 } }
@@ -266,21 +191,8 @@ describe Maitred::Helpers do
     context 'an Opscode SOLR4 component' do
       let(:component) { :solr }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) { { heap_size: 342, max_field_length: 99 } }
@@ -298,21 +210,8 @@ describe Maitred::Helpers do
     context 'a PostgreSQL component' do
       let(:component) { :postgresql }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) { { max_connections: 3939 } }
@@ -326,21 +225,8 @@ describe Maitred::Helpers do
     context 'a RabbitMQ component' do
       let(:component) { :rabbitmq }
 
-      context 'a nil config' do
-        let(:config) { nil }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
-
-      context 'an empty config' do
-        let(:config) { {} }
-
-        it 'returns an empty string' do
-          expect(res).to eq('')
-        end
-      end
+      include_context 'a nil config'
+      include_context 'an empty config'
 
       context 'a populated config' do
         let(:config) { { node_ip_address: '1.2.3.4', vip: '5.6.7.8' } }
