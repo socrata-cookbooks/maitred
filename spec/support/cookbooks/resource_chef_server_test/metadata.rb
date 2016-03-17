@@ -8,4 +8,4 @@ description      'chef_server resource test wrapper'
 long_description 'chef_server resource test wrapper'
 version          '0.0.1'
 
-depends          'socrata-chef-server'
+depends          'maitred'

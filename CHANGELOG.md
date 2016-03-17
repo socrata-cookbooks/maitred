@@ -1,5 +1,5 @@
-Socrata Chef Server Cookbook CHANGELOG
-======================================
+Maitred Cookbook CHANGELOG
+==========================
 
 v0.0.1 (2016-03-07)
 -------------------

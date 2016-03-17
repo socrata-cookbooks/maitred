@@ -1,14 +1,14 @@
-Socrata Chef Server Cookbook
-============================
-[![Cookbook Version](https://img.shields.io/cookbook/v/socrata-chef-server.svg)][cookbook]
-[![Build Status](https://img.shields.io/travis/socrata-cookbooks/socrata-chef-server-chef.svg)][travis]
-[![Code Climate](https://img.shields.io/codeclimate/github/socrata-cookbooks/socrata-chef-server-chef.svg)][codeclimate]
-[![Coverage Status](https://img.shields.io/coveralls/socrata-cookbooks/socrata-chef-server-chef.svg)][coveralls]
+Maitred Cookbook
+================
+[![Cookbook Version](https://img.shields.io/cookbook/v/maitred.svg)][cookbook]
+[![Build Status](https://img.shields.io/travis/socrata-cookbooks/maitred.svg)][travis]
+[![Code Climate](https://img.shields.io/codeclimate/github/socrata-cookbooks/maitred.svg)][codeclimate]
+[![Coverage Status](https://img.shields.io/coveralls/socrata-cookbooks/maitred.svg)][coveralls]
 
-[cookbook]: https://supermarket.chef.io/cookbooks/socrata-chef-server
-[travis]: https://travis-ci.org/socrata-cookbooks/socrata-chef-server-chef
-[codeclimate]: https://codeclimate.com/github/socrata-cookbooks/socrata-chef-server-chef
-[coveralls]: https://coveralls.io/r/socrata-cookbooks/socrata-chef-server-chef
+[cookbook]: https://supermarket.chef.io/cookbooks/maitred
+[travis]: https://travis-ci.org/socrata-cookbooks/maitred
+[codeclimate]: https://codeclimate.com/github/socrata-cookbooks/maitred
+[coveralls]: https://coveralls.io/r/socrata-cookbooks/maitred
 
 A Chef cookbook for configuring a new Chef server.
 

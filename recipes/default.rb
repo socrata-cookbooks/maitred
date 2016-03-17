@@ -1,6 +1,6 @@
 # Encoding: UTF-8
 #
-# Cookbook Name:: socrata-chef-server
+# Cookbook Name:: maitred
 # Recipe:: default
 #
 # Copyright 2016, Socrata, Inc.
