@@ -19,3 +19,23 @@
 #
 
 chef_server 'default'
+
+
+chef_server_component 'bookshelf' do
+  access_key_id 'a test'
+  secret_access_key 'SUPERSECRET'
+  vip 's3-blahblah.aws.com'
+  external_url 'https://s3.amazonaws.com'
+end
+
+vs
+
+
+chef_server_component_config 'bookshelf' do
+  config(
+    access_key_id: 'a test',
+    secret_access_key: 'SUPERSECRET',
+    vip: 's3-blahblah.aws.com',
+    external_url: 'https://s3.amazonaws.com'
+  )
+end

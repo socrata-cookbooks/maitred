@@ -79,11 +79,11 @@ module Maitred
       #
       def component_config_for(component, config = {})
         (config || {}).map do |k, v|
-          unless COMPONENT_MAP[component]
+          unless COMPONENT_MAP[component.to_sym]
             raise(UnrecognizedComponent,
                   "Unrecognized Chef Server component: #{component}")
           end
-          "#{COMPONENT_MAP[component]}['#{k}'] = #{quote(v)}"
+          "#{COMPONENT_MAP[component.to_sym]}['#{k}'] = #{quote(v)}"
         end.join("\n")
       end
 
