@@ -24,6 +24,7 @@ module Maitred
   # @author Jonathan Hartman <jonathan.hartman@socrata.com>
   class Helpers
     COMPONENT_MAP = {
+      default: nil,
       ha: 'ha',
       nginx: 'nginx',
       bookshelf: 'bookshelf',
@@ -34,7 +35,7 @@ module Maitred
       postgresql: 'postgresql',
       ldap: 'ldap',
       rabbitmq: 'rabbitmq'
-    }
+    }.freeze
 
     class << self
       #
@@ -42,6 +43,7 @@ module Maitred
       # a Chef Server component and config hash for it. Recognized components
       # include:
       #
+      #   * default
       #   * ha
       #   * erchef
       #   * nginx
@@ -53,7 +55,21 @@ module Maitred
       #   * expander
       #   * solr
       #
-      # E.g. turn this :ha config hash:
+      # E.g. turn this :default (base) config hash:
+      #
+      #   {
+      #     topology: 'ha',
+      #     bootstrap: true,
+      #     ip_version: 'ipv4'
+      #   }
+      #
+      # ...into this string that can be written to chef-server.rb
+      #
+      #   topology 'ha'
+      #   bootstrap true
+      #   ip_version 'ipv4'
+      #
+      # Or this :ha config hash:
       #
       #   {
       #     provider: 'aws',
@@ -63,7 +79,7 @@ module Maitred
       #     ebs_device: '/dev/xvdf'
       #   }
       #
-      # ...into this string that can be written to chef-server.rb:
+      # ...into this string:
       #
       #   ha['provider'] = 'aws'
       #   ha['aws_access_key_id'] = 'SOMESTUFF'
@@ -79,11 +95,13 @@ module Maitred
       #
       def component_config_for(component, config = {})
         (config || {}).map do |k, v|
-          unless COMPONENT_MAP[component.to_sym]
-            raise(UnrecognizedComponent,
-                  "Unrecognized Chef Server component: #{component}")
+          raise(UnrecognizedComponent, component) unless \
+            COMPONENT_MAP.keys.include?(component.to_sym)
+          if COMPONENT_MAP[component.to_sym].nil?
+            "#{k} #{quote(v)}"
+          else
+            "#{COMPONENT_MAP[component.to_sym]}['#{k}'] = #{quote(v)}"
           end
-          "#{COMPONENT_MAP[component.to_sym]}['#{k}'] = #{quote(v)}"
         end.join("\n")
       end
 
@@ -104,7 +122,14 @@ module Maitred
       end
     end
 
+    # A custom exception class for attempted configuration of invalid Chef
+    # Server components.
+    #
+    # @author Jonathan Hartman <jonathan.hartman@socrata.com>
     class UnrecognizedComponent < StandardError
+      def initialize(component)
+        super("Unrecognized Chef Server component: #{component}")
+      end
     end
   end
 end

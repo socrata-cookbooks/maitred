@@ -25,6 +25,32 @@ describe Maitred::Helpers do
       end
     end
 
+    context 'a default component' do
+      let(:component) { :default }
+
+      include_context 'a nil config'
+      include_context 'an empty config'
+
+      context 'a populated config' do
+        let(:config) do
+          {
+            topology: 'ha',
+            bootstrap: true,
+            ip_version: 'ipv4'
+          }
+        end
+
+        it 'returns the expeted output' do
+          expected = <<-EOH.gsub(/^ +/, '').strip
+            topology 'ha'
+            bootstrap true
+            ip_version 'ipv4'
+          EOH
+          expect(res).to eq(expected)
+        end
+      end
+    end
+
     context 'an HA component' do
       let(:component) { :ha }
 
