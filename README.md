@@ -30,7 +30,21 @@ Recipes
 
 ***default***
 
-Configures a basic, standalone Chef server.
+Performs an attribute-driven installation and configuration of a Chef Server.
+
+Attributes
+==========
+
+***default***
+
+    default['maitred']['app']['version'] = nil
+
+If desired, a specific version of Chef Server can be installed.
+
+    default['maitred']['config'] = {}
+
+Any attributes passed in as part of the config hash will be rendered to
+Chef Server's config files.
 
 Resources
 =========
@@ -59,23 +73,59 @@ Attributes:
 | topology   | `'standalone'` | The Chef Server topology |
 | action     | `:create`      | Action(s) to perform     |
 
+***chef_server_config***
+
+A resource encompassing a collection of `chef_server_component_config`
+resources representing the various Chef Server "components" (Erchef, Nginx,
+Bookshelf, etc.).
+
+Syntax:
+
+    chef_server_config 'default' do
+      topology ha
+      bookshelf { enable: false }
+      postgresql { external: true, vip: 'example.com' }
+      action :create
+    end
+
+Actions:
+
+| Action    | Description                                      |
+|-----------|--------------------------------------------------|
+| `:create` | Render config files for all properties passed in |
+| `:delete` | Delete the config files                          |
+
+Attributes:
+
+| Attribute  | Default   | Description                                |
+|------------|-----------|--------------------------------------------|
+| config     | `{}`      | Configs can be passed in as a full hash... |
+| _wildcard_ | N/A       | ...or as individual properties             |
+| action     | `:create` | Action(s) to perform                       |
+
 ***chef_server_component_config***
 
 A resource to allow individual configuration of each Chef Server component:
 
-* ha
-* erchef
-* nginx
-* bookshelf
-* postgresql
-* ldap
-* rabbitmq
-* account
-* expander
-* solr
+| Component  | Notes                                     |
+|------------|-------------------------------------------|
+| default    | Top-level settings, e.g. 'topology', etc. |
+| ha         | Chef Server's High Availability settings  |
+| erchef     |                                           |
+| nginx      |                                           |
+| bookshelf  |                                           |
+| postgresql |                                           |
+| ldap       |                                           |
+| rabbitmq   |                                           |
+| account    |                                           |
+| expander   |                                           |
+| solr       |                                           |
 
 Any properties passed in will be rendered in the final template. It's up the
-user and Chef Server itself to validate the configuration.
+user and Chef Server itself to validate the configuration. See Chef, Inc.'s
+documentation [here](https://docs.chef.io/config_rb_server.html) and
+[here](https://docs.chef.io/config_rb_server_optional_settings.html) for
+further details
 
 Syntax:
 
@@ -92,7 +142,7 @@ Actions:
 | Action    | Description                                                |
 |-----------|------------------------------------------------------------|
 | `:create` | Render the config file for the given Chef Server component |
-| `:remove` | Delete the config file                                     |
+| `:delete` | Delete the config file                                     |
 
 Attributes:
 
