@@ -47,8 +47,8 @@ describe 'resource_chef_server_component_config::ubuntu::14_04' do
     end
   end
 
-  context 'the :remove action' do
-    let(:action) { :remove }
+  context 'the :delete action' do
+    let(:action) { :delete }
 
     context 'the bookshelf component' do
       let(:component) { :bookshelf }

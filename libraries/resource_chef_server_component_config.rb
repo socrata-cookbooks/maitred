@@ -32,7 +32,7 @@ class Chef
 
       provides :chef_server_component_config
 
-      property :name, equal_to: RECOGNIZED_COMPONENTS.map(&:to_s)
+      property :name, [String, Symbol], required: true
       property :config, Hash, default: {}
 
       #
@@ -65,7 +65,7 @@ class Chef
       #
       # Delete the config file for this Chef Server component.
       #
-      action :remove do
+      action :delete do
         file(path) { action :delete }
       end
 
