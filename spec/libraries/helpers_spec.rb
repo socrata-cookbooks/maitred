@@ -35,7 +35,6 @@ describe Maitred::Helpers do
         let(:config) do
           {
             topology: 'ha',
-            bootstrap: true,
             ip_version: 'ipv4'
           }
         end
@@ -43,7 +42,6 @@ describe Maitred::Helpers do
         it 'returns the expeted output' do
           expected = <<-EOH.gsub(/^ +/, '').strip
             topology 'ha'
-            bootstrap true
             ip_version 'ipv4'
           EOH
           expect(res).to eq(expected)
@@ -264,15 +262,6 @@ describe Maitred::Helpers do
           EOH
           expect(res).to eq(expected)
         end
-      end
-    end
-
-    context 'an unrecognized component' do
-      let(:component) { :pantaloons }
-      let(:config) { { test: 'test' } }
-
-      it 'raises an error' do
-        expect { res }.to raise_error(Maitred::Helpers::UnrecognizedComponent)
       end
     end
   end

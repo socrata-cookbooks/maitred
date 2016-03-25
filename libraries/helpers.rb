@@ -23,50 +23,38 @@ module Maitred
   #
   # @author Jonathan Hartman <jonathan.hartman@socrata.com>
   class Helpers
-    COMPONENT_MAP = {
-      default: nil,
-      ha: 'ha',
-      nginx: 'nginx',
-      bookshelf: 'bookshelf',
+    #
+    # Offer some nicknames for a few of the Chef Server components. For every
+    # other component, its full name in chef-server.rb will be its property
+    # name in this cookbook.
+    #
+    COMPONENT_MAP ||= {
       erchef: 'opscode_erchef',
       account: 'opscode_account',
       expander: 'opscode_expander',
-      solr: 'opscode_solr4',
-      postgresql: 'postgresql',
-      ldap: 'ldap',
-      rabbitmq: 'rabbitmq'
+      solr: 'opscode_solr4'
     }.freeze
 
     class << self
       #
-      # Construct a section of config suitable for a chef-server.rb file from
-      # a Chef Server component and config hash for it. Recognized components
-      # include:
+      # Construct a section of config suitable for a chef-server.rb from a
+      # Chef Server component name and config hash for it. Components include
+      # such things as:
       #
-      #   * default
       #   * ha
-      #   * erchef
       #   * nginx
       #   * bookshelf
-      #   * postgresql
-      #   * ldap
-      #   * rabbitmq
-      #   * account
-      #   * expander
-      #   * solr
       #
       # E.g. turn this :default (base) config hash:
       #
       #   {
       #     topology: 'ha',
-      #     bootstrap: true,
       #     ip_version: 'ipv4'
       #   }
       #
       # ...into this string that can be written to chef-server.rb
       #
       #   topology 'ha'
-      #   bootstrap true
       #   ip_version 'ipv4'
       #
       # Or this :ha config hash:
@@ -87,6 +75,14 @@ module Maitred
       #   ha['ebs_volume_id'] = 'vol-abcdefg'
       #   ha['ebs_device'] = '/dev/xvdf'
       #
+      # We also recognize shortcut names for a few components. For example,
+      # "erchef" can be passed in as a component name and will be translated
+      # into "opscode_erchef" as required for the config file.
+      #
+      # For top-level settings that aren't hashes in chef-server.rb (e.g.
+      # "bootstrap", "api_fqdn", etc.), the component name "default" should be
+      # used.
+      #
       # @param component [Symbol] the name of this config component,
       #                                 e.g. :ldap, :nginx, etc.
       #
@@ -95,12 +91,12 @@ module Maitred
       #
       def component_config_for(component, config = {})
         (config || {}).map do |k, v|
-          raise(UnrecognizedComponent, component) unless \
-            COMPONENT_MAP.keys.include?(component.to_sym)
-          if COMPONENT_MAP[component.to_sym].nil?
+          if component.to_sym == :default
             "#{k} #{quote(v)}"
-          else
+          elsif COMPONENT_MAP[component.to_sym]
             "#{COMPONENT_MAP[component.to_sym]}['#{k}'] = #{quote(v)}"
+          else
+            "#{component}['#{k}'] = #{quote(v)}"
           end
         end.join("\n")
       end
@@ -119,16 +115,6 @@ module Maitred
         else
           %('#{item.gsub("'", "\\\\'")}')
         end
-      end
-    end
-
-    # A custom exception class for attempted configuration of invalid Chef
-    # Server components.
-    #
-    # @author Jonathan Hartman <jonathan.hartman@socrata.com>
-    class UnrecognizedComponent < StandardError
-      def initialize(component)
-        super("Unrecognized Chef Server component: #{component}")
       end
     end
   end
