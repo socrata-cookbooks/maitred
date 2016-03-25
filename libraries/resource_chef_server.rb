@@ -28,46 +28,51 @@ class Chef
     class ChefServer < Resource
       provides :chef_server
 
+      property :version, [String, Symbol, nil], default: :latest
+      property :config, Hash, default: {}
       property :opscode_user, String, default: 'opscode'
-      property :opscode_uid, Fixnum, default: 142
+      property :opscode_uid, Fixnum, coerce: proc { |v| v.to_i }, default: 142
       property :postgres_user, String, default: 'opscode-pgsql'
-      property :postgres_uid, Fixnum, default: 143
+      property :postgres_uid, Fixnum, coerce: proc { |v| v.to_i }, default: 143
 
       default_action :create
 
       action :create do
-        user opscode_user do
-          uid opscode_uid
+        user new_resource.opscode_user do
+          uid new_resource.opscode_uid
           system true
           home '/opt/opscode/embedded'
         end
         user postgres_user do
-          uid postgres_uid
+          uid new_resource.postgres_uid
           system true
           home '/opt/opscode/postgresql'
         end
         directory '/data'
         %w(/etc/opscode /etc/opscode/server.d /var/opt/opscode).each do |d|
           directory ::File.join('/data', d) do
-            owner opscode_user
-            group opscode_user
+            owner new_resource.opscode_user
+            group new_resource.opscode_user
             recursive true
           end
+        end
+        %w(/etc/opscode /var/opt/opscode).each do |d|
           link d do
             to ::File.join('/data', d)
           end
         end
         chef_ingredient 'chef-server' do
+          version new_resource.version if new_resource.version
           config <<-EOH.gsub(/^ {12}/, '').strip
             Dir.glob(
               File.join('/etc/opscode', "server.d", "*.rb")
             ).each do |conf|
-              Chef::Config.from_file(conf)
+              self.instance_eval(IO.read(conf), conf, 1)
             end
           EOH
         end
-        ingredient_config 'chef-server' do
-          sensitive true
+        chef_server_config new_resource.name do
+          config new_resource.config
           notifies :reconfigure, 'chef_ingredient[chef-server]'
         end
       end
