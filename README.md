@@ -10,12 +10,19 @@ Maitred Cookbook
 [codeclimate]: https://codeclimate.com/github/socrata-cookbooks/maitred
 [coveralls]: https://coveralls.io/r/socrata-cookbooks/maitred
 
-A Chef cookbook for configuring a new Chef server.
+A Chef cookbook for configuring a Chef Server. This cookbook wraps
+chef-ingredient to provide an easier method of configuration, via either a
+recipe and attributes, or a set of custom resources.
+
+Configuration is split up into separate .d-style config files for each Chef
+Server "component" (Bookshelf, Nginx, etc.).
 
 Requirements
 ============
 
-This cookbook uses the
+This cookbook requires Chef 12.5+.
+
+It uses the
 [chef-ingredient](https://supermarket.chef.io/cookbooks/chef-ingredient)
 cookbook to install Chef Server components.
 
@@ -32,19 +39,33 @@ Recipes
 
 Performs an attribute-driven installation and configuration of a Chef Server.
 
+This more opinionated installation method assumes UID 142 for the opscode user
+and 143 for the opscode-pgsql user, and Chef data and configs stored in
+`/data`.
+
 Attributes
 ==========
 
 ***default***
 
+If desired, a specific version of Chef Server can be installed:
+
     default['maitred']['app']['version'] = nil
 
-If desired, a specific version of Chef Server can be installed.
+Any attributes passed in as part of the config hash will be rendered to
+Chef Server's config files:
 
     default['maitred']['config'] = {}
 
-Any attributes passed in as part of the config hash will be rendered to
-Chef Server's config files.
+"Top-level" configuration as well as "component configurations" that are
+expressed as hash keys in a `chef-server.rb` can be set this way:
+
+  default['maitred']['config'].tap do |c|
+    c['api_fqdn'] = 'chef.example.com'
+    c['notification_email'] = 'example@example.com'
+    c['bookshelf']['vip'] = 'bookshelf.chef.example.com'
+    c['nginx']['ssl_protocols'] = 'TLSv1 TLSv1.1 TLSv1.2'
+  end
 
 Resources
 =========
