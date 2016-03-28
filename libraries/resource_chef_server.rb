@@ -51,8 +51,6 @@ class Chef
         directory '/data'
         %w(/etc/opscode /etc/opscode/server.d /var/opt/opscode).each do |d|
           directory ::File.join('/data', d) do
-            owner new_resource.opscode_user
-            group new_resource.opscode_user
             recursive true
           end
         end

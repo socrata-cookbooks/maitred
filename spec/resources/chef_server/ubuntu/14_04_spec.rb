@@ -42,22 +42,16 @@ describe 'resource_chef_server::ubuntu::14_04' do
 
       it 'symlinks the /etc/opscode directory' do
         expect(chef_run).to create_directory('/data/etc/opscode')
-          .with(owner: opscode_user || 'opscode',
-                group: opscode_user || 'opscode',
-                recursive: true)
+          .with(recursive: true)
         expect(chef_run).to create_directory('/data/etc/opscode/server.d')
-          .with(owner: opscode_user || 'opscode',
-                group: opscode_user || 'opscode',
-                recursive: true)
+          .with(recursive: true)
         expect(chef_run).to create_link('/etc/opscode')
           .with(to: '/data/etc/opscode')
       end
 
       it 'symlinks the /var/opt/opscode directory' do
         expect(chef_run).to create_directory('/data/var/opt/opscode')
-          .with(owner: opscode_user || 'opscode',
-                group: opscode_user || 'opscode',
-                recursive: true)
+          .with(recursive: true)
         expect(chef_run).to create_link('/var/opt/opscode')
           .with(to: '/data/var/opt/opscode')
       end

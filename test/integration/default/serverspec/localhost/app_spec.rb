@@ -3,7 +3,7 @@
 require_relative '../spec_helper'
 
 describe 'maitred::default::app' do
-  describe package('chef-server') do
+  describe package('chef-server-core') do
     it 'is installed' do
       expect(subject).to be_installed
     end
@@ -35,7 +35,7 @@ describe 'maitred::default::app' do
     end
   end
 
-  %w(/etc/opscode/server.d /var/opt/opscode).each do |d|
+  %w(/etc/opscode /var/opt/opscode).each do |d|
     describe file(d) do
       it 'is a symlink to /data' do
         expect(subject).to be_linked_to(File.join('/data', d))

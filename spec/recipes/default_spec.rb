@@ -19,7 +19,7 @@ describe 'maitred::default' do
 
     it 'creates a basic chef_server' do
       expect(chef_run).to create_chef_server('default')
-        .with(version: nil, config: {})
+        .with(version: :latest, config: {})
     end
   end
 
