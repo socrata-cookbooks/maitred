@@ -52,6 +52,15 @@ If desired, a specific version of Chef Server can be installed:
 
     default['maitred']['app']['version'] = nil
 
+Chef Server makes use of two system users ("opscode" and "opscode-pgsql" with
+UIDs 142 and 143 by default) for file ownership whose information can be
+overridden:
+
+    default['maitred']['app']['opscode_user'] = nil
+    default['maitred']['app']['opscode_uid'] = nil
+    default['maitred']['app']['postgres_user'] = nil
+    default['maitred']['app']['postgres_uid'] = nil
+
 Any attributes passed in as part of the config hash will be rendered to
 Chef Server's config files:
 
