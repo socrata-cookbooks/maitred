@@ -19,6 +19,6 @@
 #
 
 chef_server 'default' do
-  version node['maitred']['app']['version']
+  version node['maitred']['app']['version'] if node['maitred']['app']['version']
   config node['maitred']['config']
 end
