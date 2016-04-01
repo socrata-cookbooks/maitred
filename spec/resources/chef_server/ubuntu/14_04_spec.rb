@@ -9,7 +9,7 @@ describe 'resource_chef_server::ubuntu::14_04' do
   let(:runner) do
     ChefSpec::SoloRunner.new(
       step_into: 'chef_server', platform: 'ubuntu', version: '14.04'
-    ) do |node| 
+    ) do |node|
       node.set['maitred']['app']['version'] = version unless version.nil?
       %i(config opscode_user opscode_uid postgres_user postgres_uid).each do |i|
         node.set['maitred'][i] = send(i) unless send(i).nil?
@@ -24,14 +24,14 @@ describe 'resource_chef_server::ubuntu::14_04' do
     shared_examples_for 'any attributes' do
       it 'creates the opscode user' do
         expect(chef_run).to create_user(opscode_user || 'opscode')
-          .with(uid: opscode_uid ? opscode_uid.to_i : 142,
+          .with(uid: opscode_uid ? opscode_uid.to_i : 303,
                 system: true,
                 home: '/opt/opscode/embedded')
       end
 
       it 'creates the opscode postgres user' do
         expect(chef_run).to create_user(postgres_user || 'opscode-pgsql')
-          .with(uid: postgres_uid ? postgres_uid.to_i : 143,
+          .with(uid: postgres_uid ? postgres_uid.to_i : 304,
                 system: true,
                 home: '/opt/opscode/postgresql')
       end

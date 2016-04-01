@@ -39,8 +39,8 @@ Recipes
 
 Performs an attribute-driven installation and configuration of a Chef Server.
 
-This more opinionated installation method assumes UID 142 for the opscode user
-and 143 for the opscode-pgsql user, and Chef data and configs stored in
+This more opinionated installation method assumes UID 303 for the opscode user
+and 304 for the opscode-pgsql user, and Chef data and configs stored in
 `/data`.
 
 Attributes
@@ -53,7 +53,7 @@ If desired, a specific version of Chef Server can be installed:
     default['maitred']['app']['version'] = nil
 
 Chef Server makes use of two system users ("opscode" and "opscode-pgsql" with
-UIDs 142 and 143 by default) for file ownership whose information can be
+UIDs 303 and 304 by default) for file ownership whose information can be
 overridden:
 
     default['maitred']['app']['opscode_user'] = nil

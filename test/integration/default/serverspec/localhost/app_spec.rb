@@ -14,8 +14,8 @@ describe 'maitred::default::app' do
       expect(subject).to exist
     end
 
-    it 'has uid 142' do
-      expect(subject).to have_uid(142)
+    it 'has uid 303' do
+      expect(subject).to have_uid(303)
     end
   end
 
@@ -24,8 +24,8 @@ describe 'maitred::default::app' do
       expect(subject).to exist
     end
 
-    it 'has uid 143' do
-      expect(subject).to have_uid(143)
+    it 'has uid 304' do
+      expect(subject).to have_uid(304)
     end
   end
 

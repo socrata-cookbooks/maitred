@@ -31,9 +31,9 @@ class Chef
       property :version, [String, Symbol, nil], default: :latest
       property :config, Hash, default: {}
       property :opscode_user, String, default: 'opscode'
-      property :opscode_uid, Fixnum, coerce: proc { |v| v.to_i }, default: 142
+      property :opscode_uid, Fixnum, coerce: proc { |v| v.to_i }, default: 303
       property :postgres_user, String, default: 'opscode-pgsql'
-      property :postgres_uid, Fixnum, coerce: proc { |v| v.to_i }, default: 143
+      property :postgres_uid, Fixnum, coerce: proc { |v| v.to_i }, default: 304
 
       default_action :create
 

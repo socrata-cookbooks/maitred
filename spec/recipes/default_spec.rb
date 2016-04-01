@@ -26,9 +26,9 @@ describe 'maitred::default' do
       expect(chef_run).to create_chef_server('default').with(
         version: version.nil? ? :latest : version,
         opscode_user: opscode_user.nil? ? 'opscode' : opscode_user,
-        opscode_uid: opscode_uid.nil? ? 142 : opscode_uid,
+        opscode_uid: opscode_uid.nil? ? 303 : opscode_uid,
         postgres_user: postgres_user.nil? ? 'opscode-pgsql' : postgres_user,
-        postgres_uid: postgres_uid.nil? ? 143 : postgres_uid
+        postgres_uid: postgres_uid.nil? ? 304 : postgres_uid
       )
     end
   end

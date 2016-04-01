@@ -39,14 +39,12 @@ class Chef
       # Allow manipulation of the config hash by calling unrecognized methods.
       #
       def method_missing(method_symbol, *args, &block)
-        begin
+        super
+      rescue NoMethodError
+        if !block.nil? || args.length != 1
           super
-        rescue NoMethodError
-          if !block.nil? || args.length != 1
-            super
-          else
-            config[method_symbol] = args[0]
-          end
+        else
+          config[method_symbol] = args[0]
         end
       end
 
