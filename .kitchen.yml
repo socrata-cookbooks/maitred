@@ -6,6 +6,9 @@ driver:
   network:
     - ['private_network', {type: 'dhcp'}]
 
+provisioner:
+  name: chef_zero
+
 platforms:
   - name: ubuntu-14.04
 

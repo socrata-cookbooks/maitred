@@ -12,4 +12,6 @@ group :unit do
   cookbook 'resource_chef_server_component_config_test',
            path: 'spec/support/cookbooks/' \
                  'resource_chef_server_component_config_test'
+  cookbook 'resource_chef_server_user_test',
+           path: 'spec/support/cookbooks/resource_chef_server_user_test'
 end

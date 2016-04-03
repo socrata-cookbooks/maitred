@@ -19,6 +19,8 @@
 #
 
 require 'chef/resource'
+require_relative 'resource_chef_server_config'
+require_relative 'resource_chef_server_user'
 
 class Chef
   class Resource
@@ -38,14 +40,12 @@ class Chef
       default_action :create
 
       action :create do
-        user new_resource.opscode_user do
+        chef_server_user new_resource.opscode_user do
           uid new_resource.opscode_uid
-          system true
           home '/opt/opscode/embedded'
         end
-        user postgres_user do
+        chef_server_user new_resource.postgres_user do
           uid new_resource.postgres_uid
-          system true
           home '/opt/opscode/postgresql'
         end
         directory '/data'
