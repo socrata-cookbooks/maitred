@@ -32,7 +32,7 @@ describe 'resource_chef_server::ubuntu::14_04' do
         expect(chef_run).to create_chef_server_user(
           postgres_user || 'opscode-pgsql'
         ).with(uid: postgres_uid ? postgres_uid.to_i : 304,
-               home: '/opt/opscode/postgresql')
+               home: '/var/opt/opscode/postgresql')
       end
 
       it 'creates the /data directory' do

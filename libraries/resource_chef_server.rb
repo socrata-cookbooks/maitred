@@ -21,6 +21,7 @@
 require 'chef/resource'
 require_relative 'resource_chef_server_config'
 require_relative 'resource_chef_server_user'
+require_relative 'resource_chef_server_bootstrap'
 
 class Chef
   class Resource
@@ -46,7 +47,7 @@ class Chef
         end
         chef_server_user new_resource.postgres_user do
           uid new_resource.postgres_uid
-          home '/opt/opscode/postgresql'
+          home '/var/opt/opscode/postgresql'
         end
         directory '/data'
         %w(/etc/opscode /etc/opscode/server.d /var/opt/opscode).each do |d|
@@ -73,6 +74,7 @@ class Chef
           config new_resource.config
           notifies :reconfigure, 'chef_ingredient[chef-server]'
         end
+        chef_server_bootstrap 'default'
       end
 
       action :remove do
