@@ -12,5 +12,6 @@ source_url 'https://github.com/socrata-cookbooks/maitred'
 issues_url 'https://github.com/socrata-cookbooks/maitred/issues'
 
 depends 'chef-ingredient', '~> 0.17'
+depends 'chef-client', '~> 4.3'
 
 supports 'ubuntu'
