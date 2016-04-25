@@ -1,7 +1,7 @@
 # Encoding: UTF-8
 #
 # Cookbook Name:: maitred
-# Library:: resource_chef_server_user
+# Library:: resource_chef_server_system_user
 #
 # Copyright 2016, Socrata, Inc.
 #
@@ -22,12 +22,12 @@ require 'chef/resource'
 
 class Chef
   class Resource
-    # A custom resource for setting up Chef Server users and storing their
-    # information in data bags.
+    # A custom resource for setting up Chef Server system users and storing
+    # their information in data bags.
     #
     # @author Jonathan Hartman <jonathan.hartman@socrata.com>
-    class ChefServerUser < Resource
-      provides :chef_server_user
+    class ChefServerSystemUser < Resource
+      provides :chef_server_system_user
 
       property :uid, Fixnum, coerce: proc { |v| v.to_i }, required: true
       property :home, String, required: true

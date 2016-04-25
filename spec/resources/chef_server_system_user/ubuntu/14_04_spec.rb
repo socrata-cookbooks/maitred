@@ -1,13 +1,13 @@
 require_relative '../../../spec_helper'
 
-describe 'resource_chef_server_user::ubuntu::14_04' do
+describe 'resource_chef_server_system_user::ubuntu::14_04' do
   let(:runner) do
-    ChefSpec::SoloRunner.new(step_into: 'chef_server_user',
+    ChefSpec::SoloRunner.new(step_into: 'chef_server_system_user',
                              platform: 'ubuntu',
                              version: '14.04')
   end
   let(:converge) do
-    runner.converge("resource_chef_server_user_test::#{action}")
+    runner.converge("resource_chef_server_system_user_test::#{action}")
   end
 
   context 'the default action (:create)' do
@@ -15,9 +15,8 @@ describe 'resource_chef_server_user::ubuntu::14_04' do
     cached(:chef_run) { converge }
 
     it 'creates the user' do
-      expect(chef_run).to create_user('example').with(uid: 123,
-                                                      system: true,
-                                                      home: '/tmp/example')
+      expect(chef_run).to create_user('example')
+        .with(uid: 123, system: true, home: '/tmp/example')
     end
 
     it 'uploads the user to a data bag' do
