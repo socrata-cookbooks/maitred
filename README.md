@@ -182,6 +182,17 @@ Attributes:
 | _wildcard_ | N/A       | ...or as individual properties                      |
 | action     | `:create` | Action(s) to perform                                |
 
+Reference Links
+===============
+
+https://github.com/chef/qa-chef-server-cluster
+
+https://github.com/hwdsl2/docker-ipsec-vpn-server
+
+https://github.com/chef-cookbooks/chef-server-cluster/blob/master/recipes/setup-ssh-keys.rb
+
+https://github.com/50onRed/chef-server-rds/blob/master/recipes/default.rb
+
 Contributing
 ============
 
