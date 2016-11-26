@@ -20,9 +20,12 @@
 # limitations under the License.
 #
 
-default['maitred']['app']['version'] = nil
-default['maitred']['app']['opscode_user'] = nil
-default['maitred']['app']['opscode_uid'] = nil
-default['maitred']['app']['postgres_user'] = nil
-default['maitred']['app']['postgres_uid'] = nil
+default['maitred']['app'].tap do |a|
+  a['version'] = nil
+  a['opscode_user'] = nil
+  a['opscode_uid'] = nil
+  a['postgres_user'] = nil
+  a['postgres_uid'] = nil
+end
+
 default['maitred']['config'] = {}

@@ -20,17 +20,9 @@
 # limitations under the License.
 #
 
-version = node['maitred']['app']['version']
-opscode_user = node['maitred']['app']['opscode_user']
-opscode_uid = node['maitred']['app']['opscode_uid']
-postgres_user = node['maitred']['app']['postgres_user']
-postgres_uid = node['maitred']['app']['postgres_uid']
-
 chef_server 'default' do
-  version version unless version.nil?
-  opscode_user opscode_user unless opscode_user.nil?
-  opscode_uid opscode_uid unless opscode_uid.nil?
-  postgres_user postgres_user unless postgres_user.nil?
-  postgres_uid postgres_uid unless postgres_uid.nil?
+  node['maitred']['app'].each do |k, v|
+    send(k, v) unless v.nil?
+  end
   config node['maitred']['config']
 end
