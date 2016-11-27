@@ -22,6 +22,7 @@ group :test do
   gem 'coveralls'
   gem 'fauxhai'
   gem 'test-kitchen'
+  gem 'kitchen-dokken'
   gem 'kitchen-vagrant'
 end
 
