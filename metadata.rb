@@ -8,6 +8,7 @@ license 'apache2'
 description 'Installs/configures a Chef server'
 long_description 'Installs/configures a Chef server'
 version '0.0.1'
+chef_version '>= 12.1'
 
 source_url 'https://github.com/socrata-cookbooks/maitred'
 issues_url 'https://github.com/socrata-cookbooks/maitred/issues'
