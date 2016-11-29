@@ -31,7 +31,7 @@ class Chef
     class ChefServerSystemUser < Resource
       provides :chef_server_system_user
 
-      property :uid, Fixnum, coerce: proc { |v| v.to_i }, required: true
+      property :uid, Integer, coerce: proc { |v| v.to_i }, required: true
       property :home, String, required: true
 
       default_action :create

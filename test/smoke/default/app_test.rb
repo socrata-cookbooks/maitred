@@ -13,7 +13,7 @@ describe file('/data') do
   end
 end
 
-%w(/etc/opscode /var/opt/opscode).each do |d|
+%w[/etc/opscode /var/opt/opscode].each do |d|
   describe file(d) do
     it 'is a symlink to /data' do
       expect(subject).to be_linked_to(File.join('/data', d))

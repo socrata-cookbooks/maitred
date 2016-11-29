@@ -7,9 +7,9 @@ shared_context 'resources::chef_server' do
   include_context 'resources'
 
   let(:resource) { 'chef_server' }
-  %i(
+  %i[
     version config opscode_user opscode_uid postgres_user postgres_uid
-  ).each do |i|
+  ].each do |i|
     let(i) { nil }
   end
   let(:properties) do
@@ -32,7 +32,7 @@ shared_context 'resources::chef_server' do
   end
 
   shared_context 'all default properties' do
-  end  
+  end
 
   shared_context 'an overridden version property' do
     let(:version) { '1.2.3' }

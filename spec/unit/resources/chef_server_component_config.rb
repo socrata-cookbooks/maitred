@@ -7,7 +7,7 @@ shared_context 'resources::chef_server_component_config' do
   include_context 'resources'
 
   let(:resource) { 'chef_server_component_config' }
-  %i(component config).each { |i| let(i) { nil } }
+  %i[component config].each { |i| let(i) { nil } }
   let(:properties) { { component: component, config: config } }
 
   shared_context 'the :create action' do
@@ -16,7 +16,7 @@ shared_context 'resources::chef_server_component_config' do
   shared_context 'the :delete action' do
     let(:action) { :delete }
   end
-  
+
   shared_context 'properties for a bookshelf component' do
     let(:component) { :bookshelf }
     let(:config) do

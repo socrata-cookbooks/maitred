@@ -36,9 +36,9 @@ class Chef
       property :version, [String, Symbol, nil], default: :latest
       property :config, Hash, default: {}
       property :opscode_user, String, default: 'opscode'
-      property :opscode_uid, Fixnum, coerce: proc { |v| v.to_i }, default: 303
+      property :opscode_uid, Integer, coerce: proc { |v| v.to_i }, default: 303
       property :postgres_user, String, default: 'opscode-pgsql'
-      property :postgres_uid, Fixnum, coerce: proc { |v| v.to_i }, default: 304
+      property :postgres_uid, Integer, coerce: proc { |v| v.to_i }, default: 304
 
       default_action :create
 
@@ -52,12 +52,12 @@ class Chef
           home '/var/opt/opscode/postgresql'
         end
         directory '/data'
-        %w(/etc/opscode /etc/opscode/server.d /var/opt/opscode).each do |d|
+        %w[/etc/opscode /etc/opscode/server.d /var/opt/opscode].each do |d|
           directory ::File.join('/data', d) do
             recursive true
           end
         end
-        %w(/etc/opscode /var/opt/opscode).each do |d|
+        %w[/etc/opscode /var/opt/opscode].each do |d|
           link d do
             to ::File.join('/data', d)
           end

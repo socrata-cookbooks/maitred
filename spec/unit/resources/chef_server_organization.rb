@@ -7,7 +7,7 @@ shared_context 'resources::chef_server_organization' do
   include_context 'resources'
 
   let(:resource) { 'chef_server_organization' }
-  %i(full_name user file).each { |i| let(i) { nil } }
+  %i[full_name user file].each { |i| let(i) { nil } }
   let(:properties) { { full_name: full_name, user: user, file: file } }
   let(:name) { 'myorg' }
 

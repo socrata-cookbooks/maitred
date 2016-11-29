@@ -7,7 +7,7 @@ shared_context 'resources::chef_server_config' do
   include_context 'resources'
 
   let(:resource) { 'chef_server_config' }
-  %i(config).each { |i| let(i) { nil } }
+  %i[config].each { |i| let(i) { nil } }
   let(:properties) { { config: config } }
   let(:name) { 'default' }
 
@@ -18,7 +18,7 @@ shared_context 'resources::chef_server_config' do
     let(:action) { :delete }
   end
 
-  shared_context 'properties for a set of top-level configs'
+  shared_context 'properties for a set of top-level configs' do
     let(:config) do
       {
         api_fqdn: 'example.com',

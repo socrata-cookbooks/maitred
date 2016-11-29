@@ -4,17 +4,17 @@
 require_relative '../../spec_helper'
 
 describe 'maitred::default' do
-  %i(
+  %i[
     version opscode_user opscode_uid postgres_user postgres_uid config
-  ).each do |i|
+  ].each do |i|
     let(i) { nil }
   end
   let(:platform) { { platform: 'ubuntu', version: '14.04' } }
   let(:runner) do
     ChefSpec::SoloRunner.new(platform) do |node|
-      %i(
+      %i[
         version opscode_user opscode_uid postgres_user postgres_uid
-      ).each do |a|
+      ].each do |a|
         node.set['maitred']['app'][a] = send(a) unless send(a).nil?
       end
       node.set['maitred']['config'] = config unless config.nil?
