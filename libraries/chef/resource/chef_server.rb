@@ -3,7 +3,7 @@
 
 #
 # Cookbook Name:: maitred
-# Library:: resource_chef_server
+# Library:: chef/resource/chef_server
 #
 # Copyright 2016, Socrata, Inc.
 #
@@ -21,9 +21,9 @@
 #
 
 require 'chef/resource'
-require_relative 'resource_chef_server_config'
-require_relative 'resource_chef_server_system_user'
-require_relative 'resource_chef_server_bootstrap'
+require_relative 'chef_server_config'
+require_relative 'chef_server_system_user'
+require_relative 'chef_server_bootstrap'
 
 class Chef
   class Resource

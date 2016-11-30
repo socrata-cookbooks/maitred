@@ -3,7 +3,7 @@
 
 #
 # Cookbook Name:: maitred
-# Library:: resource_chef_server_config
+# Library:: chef/resource/chef_server_config
 #
 # Copyright 2016, Socrata, Inc.
 #
