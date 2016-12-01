@@ -33,7 +33,7 @@ class Chef
     class ChefServer < Resource
       provides :chef_server
 
-      property :version, [String, Symbol, nil], default: :latest
+      property :version, [String, Symbol]
       property :config, Hash, default: {}
       property :opscode_user, String, default: 'opscode'
       property :opscode_uid, Integer, coerce: proc { |v| v.to_i }, default: 303

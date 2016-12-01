@@ -106,7 +106,7 @@ shared_context 'resources::chef_server' do
             end
           EOH
           expect(chef_run).to install_chef_ingredient('chef-server')
-            .with(version: version || :latest, config: expected)
+            .with(version: version, config: expected)
         end
 
         it 'builds a chef_server_config' do
