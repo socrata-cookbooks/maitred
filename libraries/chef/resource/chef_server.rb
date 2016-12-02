@@ -22,7 +22,6 @@
 
 require 'chef/resource'
 require_relative 'chef_server_config'
-require_relative 'chef_server_system_user'
 require_relative 'chef_server_bootstrap'
 
 class Chef
@@ -43,14 +42,18 @@ class Chef
       default_action :create
 
       action :create do
-        chef_server_system_user new_resource.opscode_user do
+        user new_resource.opscode_user do
           uid new_resource.opscode_uid
           home '/opt/opscode/embedded'
+          system true
         end
-        chef_server_system_user new_resource.postgres_user do
+
+        user new_resource.postgres_user do
           uid new_resource.postgres_uid
           home '/var/opt/opscode/postgresql'
+          system true
         end
+
         directory '/data'
         %w[/etc/opscode /etc/opscode/server.d /var/opt/opscode].each do |d|
           directory ::File.join('/data', d) do

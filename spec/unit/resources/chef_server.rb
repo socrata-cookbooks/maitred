@@ -64,17 +64,17 @@ shared_context 'resources::chef_server' do
 
       shared_examples_for 'any property set' do
         it 'creates the opscode user' do
-          expect(chef_run).to create_chef_server_system_user(
-            opscode_user || 'opscode'
-          ).with(uid: opscode_uid ? opscode_uid.to_i : 303,
-                 home: '/opt/opscode/embedded')
+          expect(chef_run).to create_user(opscode_user || 'opscode')
+            .with(uid: opscode_uid ? opscode_uid.to_i : 303,
+                  home: '/opt/opscode/embedded',
+                  system: true)
         end
 
         it 'creates the opscode postgres user' do
-          expect(chef_run).to create_chef_server_system_user(
-            postgres_user || 'opscode-pgsql'
-          ).with(uid: postgres_uid ? postgres_uid.to_i : 304,
-                 home: '/var/opt/opscode/postgresql')
+          expect(chef_run).to create_user(postgres_user || 'opscode-pgsql')
+          .with(uid: postgres_uid ? postgres_uid.to_i : 304,
+                home: '/var/opt/opscode/postgresql',
+                system: true)
         end
 
         it 'creates the /data directory' do
