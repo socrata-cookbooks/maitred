@@ -34,7 +34,7 @@ class Chef
 
       provides :chef_server_component_config
 
-      property :name, [String, Symbol], required: true
+      property :component, String, name_property: true, coerce: proc { |v| v.to_s }
       property :config, Hash, default: {}
 
       #
@@ -57,7 +57,7 @@ class Chef
       #
       action :create do
         file path do
-          content Maitred::Helpers.component_config_for(new_resource.name,
+          content Maitred::Helpers.component_config_for(new_resource.component,
                                                         new_resource.config)
         end
       end
@@ -75,7 +75,7 @@ class Chef
       # @return [String] a path to the config file
       #
       def path
-        ::File.join('/etc/opscode/server.d', "#{name}.rb")
+        ::File.join('/etc/opscode/server.d', "#{component}.rb")
       end
     end
   end
