@@ -7,9 +7,9 @@ shared_context 'resources::chef_server_config' do
   include_context 'resources'
 
   let(:resource) { 'chef_server_config' }
-  %i[config].each { |i| let(i) { nil } }
-  let(:properties) { { config: config } }
-  let(:name) { 'default' }
+  %i[path config].each { |i| let(i) { nil } }
+  let(:properties) { { path: path, config: config } }
+  let(:name) { '/etc/opscode/server.d' }
 
   shared_context 'the :create action' do
   end
@@ -58,7 +58,8 @@ shared_context 'resources::chef_server_config' do
 
         it 'creates the proper default component config' do
           expect(chef_run).to create_chef_server_component_config('default')
-            .with(config: {
+            .with(dir: path || name,
+                  config: {
                     'api_fqdn' => 'example.com',
                     'ip_version' => 'ipv6',
                     'notification_email' => 'example@example.com'
@@ -71,12 +72,13 @@ shared_context 'resources::chef_server_config' do
 
         it 'creates the proper bookshelf component config' do
           expect(chef_run).to create_chef_server_component_config('bookshelf')
-            .with(config: { 'enable' => false, 'access_key_id' => '12345' })
+            .with(dir: path || name,
+                  config: { 'enable' => false, 'access_key_id' => '12345' })
         end
 
         it 'creates the proper erchef component config' do
           expect(chef_run).to create_chef_server_component_config('erchef')
-            .with(config: { 'db_pool_size' => 30 })
+            .with(dir: path || name, config: { 'db_pool_size' => 30 })
         end
 
         it 'creates the proper nginx component config' do
@@ -90,7 +92,8 @@ shared_context 'resources::chef_server_config' do
 
         it 'creates the proper default component config' do
           expect(chef_run).to create_chef_server_component_config('default')
-            .with(config: {
+            .with(dir: path || name,
+                  config: {
                     'api_fqdn' => 'example.com',
                     'notification_email' => 'example@example.com'
                   })
@@ -98,12 +101,12 @@ shared_context 'resources::chef_server_config' do
 
         it 'creates the proper erchef component config' do
           expect(chef_run).to create_chef_server_component_config('erchef')
-            .with(config: { 'db_pool_size' => 30 })
+            .with(dir: path || name, config: { 'db_pool_size' => 30 })
         end
 
         it 'creates the proper nginx component config' do
           expect(chef_run).to create_chef_server_component_config('nginx')
-            .with(config: { 'ssl_protocols' => 'TLSv1.2' })
+            .with(dir: path || name, config: { 'ssl_protocols' => 'TLSv1.2' })
         end
       end
     end
@@ -112,12 +115,7 @@ shared_context 'resources::chef_server_config' do
       include_context description
 
       it 'deletes the config .d directory' do
-        expect(chef_run).to delete_directory('/etc/opscode/server.d')
-          .with(recursive: true)
-      end
-
-      it 'deletes the main chef-server.rb' do
-        expect(chef_run).to delete_file('/etc/opscode/chef-server.rb')
+        expect(chef_run).to delete_directory(path || name).with(recursive: true)
       end
     end
   end

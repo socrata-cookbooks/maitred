@@ -8,13 +8,20 @@ shared_context 'resources::chef_server' do
 
   let(:resource) { 'chef_server' }
   %i[
-    version config opscode_user opscode_uid postgres_user postgres_uid
+    version
+    config_dir
+    config
+    opscode_user
+    opscode_uid
+    postgres_user
+    postgres_uid
   ].each do |i|
     let(i) { nil }
   end
   let(:properties) do
     {
       version: version,
+      config_dir: config_dir,
       config: config,
       opscode_user: opscode_user,
       opscode_uid: opscode_uid,
@@ -36,6 +43,10 @@ shared_context 'resources::chef_server' do
 
   shared_context 'an overridden version property' do
     let(:version) { '1.2.3' }
+  end
+
+  shared_context 'an overridden config_dir property' do
+    let(:config_dir) { '/tmp/chef.d' }
   end
 
   shared_context 'an overridden config property' do
@@ -81,27 +92,20 @@ shared_context 'resources::chef_server' do
           expect(chef_run).to create_directory('/data')
         end
 
-        it 'symlinks the /etc/opscode directory' do
-          expect(chef_run).to create_directory('/data/etc/opscode')
-            .with(recursive: true)
-          expect(chef_run).to create_directory('/data/etc/opscode/server.d')
-            .with(recursive: true)
-          expect(chef_run).to create_link('/etc/opscode')
-            .with(to: '/data/etc/opscode')
-        end
+        %w[/etc/opscode /var/opt/opscode].each do |d|
+          it "creates the /data#{d} directory" do
+            expect(chef_run).to create_directory("/data#{d}")
+              .with(recursive: true)
+          end
 
-        it 'symlinks the /var/opt/opscode directory' do
-          expect(chef_run).to create_directory('/data/var/opt/opscode')
-            .with(recursive: true)
-          expect(chef_run).to create_link('/var/opt/opscode')
-            .with(to: '/data/var/opt/opscode')
+          it "symlinks the #{d} directory" do
+            expect(chef_run).to create_link(d).with(to: "/data#{d}")
+          end
         end
 
         it 'installs the chef-server ingredient' do
           expected = <<-EOH.gsub(/^ {10}/, '').strip
-            Dir.glob(
-              File.join('/etc/opscode', "server.d", "*.rb")
-            ).each do |conf|
+            Dir.glob('/etc/opscode/server.d/*.rb').each do |conf|
               self.instance_eval(IO.read(conf), conf, 1)
             end
           EOH
@@ -110,11 +114,14 @@ shared_context 'resources::chef_server' do
         end
 
         it 'builds a chef_server_config' do
-          expect(chef_run).to create_chef_server_config('default')
-            .with(config: config || {})
-          expect(chef_run.chef_server_config('default')).to notify(
-            'chef_ingredient[chef-server]'
-          ).to(:reconfigure)
+          expect(chef_run).to create_chef_server_config(
+            config_dir || '/etc/opscode/server.d'
+          ).with(config: config || {})
+          expect(
+            chef_run.chef_server_config(
+              config_dir || '/etc/opscode/server.d'
+            )
+          ).to notify('chef_ingredient[chef-server]').to(:reconfigure)
         end
       end
 
@@ -125,6 +132,12 @@ shared_context 'resources::chef_server' do
       end
 
       context 'an overridden version property' do
+        include_context description
+
+        it_behaves_like 'any property set'
+      end
+
+      context 'an overridden config_dir property' do
         include_context description
 
         it_behaves_like 'any property set'

@@ -30,11 +30,10 @@ class Chef
     #
     # @author Jonathan Hartman <jonathan.hartman@socrata.com>
     class ChefServerComponentConfig < Resource
-      RECOGNIZED_COMPONENTS = Maitred::Helpers::COMPONENT_MAP.keys
-
       provides :chef_server_component_config
 
-      property :component, String, name_property: true, coerce: proc { |v| v.to_s }
+      property :component, String, name_property: true
+      property :dir, String, required: true
       property :config, Hash, default: {}
 
       #
@@ -56,7 +55,7 @@ class Chef
       # Generate the config file for this Chef Server component.
       #
       action :create do
-        file path do
+        file ::File.join(new_resource.dir, "#{new_resource.component}.rb") do
           content Maitred::Helpers.component_config_for(new_resource.component,
                                                         new_resource.config)
         end
@@ -66,16 +65,9 @@ class Chef
       # Delete the config file for this Chef Server component.
       #
       action :delete do
-        file(path) { action :delete }
-      end
-
-      #
-      # Construct the full path of the config file for this component.
-      #
-      # @return [String] a path to the config file
-      #
-      def path
-        ::File.join('/etc/opscode/server.d', "#{component}.rb")
+        file ::File.join(new_resource.dir, "#{new_resource.component}.rb") do
+          action :delete
+        end
       end
     end
   end

@@ -31,6 +31,7 @@ class Chef
     class ChefServerConfig < Resource
       provides :chef_server_config
 
+      property :path, String, name_property: true
       property :config, Hash, default: {}
 
       #
@@ -55,12 +56,16 @@ class Chef
         base = new_resource.config.select { |_, v| !v.is_a?(Hash) }
         rest = new_resource.config.select { |_, v| v.is_a?(Hash) }
 
+        directory(new_resource.path) { recursive true }
+
         chef_server_component_config 'default' do
+          dir new_resource.path
           config base
         end
 
         rest.each do |k, v|
           chef_server_component_config k do
+            dir new_resource.path
             config v
           end
         end
@@ -70,11 +75,8 @@ class Chef
       # Delete the configs for this Chef Server.
       #
       action :delete do
-        directory '/etc/opscode/server.d' do
+        directory new_resource.path do
           recursive true
-          action :delete
-        end
-        file '/etc/opscode/chef-server.rb' do
           action :delete
         end
       end

@@ -7,8 +7,8 @@ shared_context 'resources::chef_server_component_config' do
   include_context 'resources'
 
   let(:resource) { 'chef_server_component_config' }
-  %i[component config].each { |i| let(i) { nil } }
-  let(:properties) { { component: component, config: config } }
+  %i[component dir config].each { |i| let(i) { nil } }
+  let(:properties) { { component: component, dir: dir, config: config } }
 
   shared_context 'the :create action' do
   end
@@ -19,6 +19,7 @@ shared_context 'resources::chef_server_component_config' do
 
   shared_context 'properties for a bookshelf component' do
     let(:component) { :bookshelf }
+    let(:dir) { '/etc/opscode/server.d' }
     let(:config) do
       {
         enable: false,

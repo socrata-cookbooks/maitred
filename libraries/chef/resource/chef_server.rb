@@ -32,7 +32,8 @@ class Chef
     class ChefServer < Resource
       provides :chef_server
 
-      property :version, [String, Symbol]
+      property :version, String
+      property :config_dir, String, default: '/etc/opscode/server.d'
       property :config, Hash, default: {}
       property :opscode_user, String, default: 'opscode'
       property :opscode_uid, Integer, coerce: proc { |v| v.to_i }, default: 303
@@ -55,12 +56,11 @@ class Chef
         end
 
         directory '/data'
-        %w[/etc/opscode /etc/opscode/server.d /var/opt/opscode].each do |d|
+        %w[/etc/opscode /var/opt/opscode].each do |d|
           directory ::File.join('/data', d) do
             recursive true
           end
-        end
-        %w[/etc/opscode /var/opt/opscode].each do |d|
+
           link d do
             to ::File.join('/data', d)
           end
@@ -68,18 +68,15 @@ class Chef
         chef_ingredient 'chef-server' do
           version new_resource.version if new_resource.version
           config <<-EOH.gsub(/^ {12}/, '').strip
-            Dir.glob(
-              File.join('/etc/opscode', "server.d", "*.rb")
-            ).each do |conf|
+            Dir.glob('#{new_resource.config_dir}/*.rb').each do |conf|
               self.instance_eval(IO.read(conf), conf, 1)
             end
           EOH
         end
-        chef_server_config new_resource.name do
+        chef_server_config new_resource.config_dir do
           config new_resource.config
           notifies :reconfigure, 'chef_ingredient[chef-server]'
         end
-        chef_server_bootstrap 'default'
       end
 
       action :remove do
