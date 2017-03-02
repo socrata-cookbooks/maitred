@@ -40,10 +40,12 @@ class Chef
       def method_missing(method_symbol, *args, &block)
         super
       rescue NoMethodError
-        if !block.nil? || args.length != 1
-          super
-        else
+        raise if !block.nil? || args.length > 1
+        case args.length
+        when 1
           config[method_symbol] = args[0]
+        when 0
+          config[method_symbol] || raise
         end
       end
 

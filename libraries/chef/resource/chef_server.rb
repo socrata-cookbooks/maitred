@@ -66,7 +66,7 @@ class Chef
           end
         end
         chef_ingredient 'chef-server' do
-          version new_resource.version if new_resource.version
+          version new_resource.version unless new_resource.version.nil?
           config <<-EOH.gsub(/^ {12}/, '').strip
             Dir.glob('#{new_resource.config_dir}/*.rb').each do |conf|
               self.instance_eval(IO.read(conf), conf, 1)
