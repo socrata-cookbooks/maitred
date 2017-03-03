@@ -79,13 +79,13 @@ expressed as hash keys in a `chef-server.rb` can be set this way:
 Resources
 =========
 
-***chef_server***
+***maitred***
 
 A resource wrapper for configuring a new Chef server.
 
 Syntax:
 
-    chef_server 'default' do
+    maitred 'default' do
         topology 'standalone'
         action :create
     end
@@ -103,15 +103,15 @@ Attributes:
 | topology   | `'standalone'` | The Chef Server topology |
 | action     | `:create`      | Action(s) to perform     |
 
-***chef_server_config***
+***maitred_config***
 
-A resource encompassing a collection of `chef_server_component_config`
-resources representing the various Chef Server "components" (Erchef, Nginx,
-Bookshelf, etc.).
+A resource encompassing a collection of `maitred_component_config` resources
+representing the various Chef Server "components" (Erchef, Nginx, Bookshelf,
+etc.).
 
 Syntax:
 
-    chef_server_config 'default' do
+    maitred_config 'default' do
       topology ha
       bookshelf { enable: false }
       postgresql { external: true, vip: 'example.com' }
@@ -133,7 +133,7 @@ Attributes:
 | _wildcard_ | N/A       | ...or as individual properties             |
 | action     | `:create` | Action(s) to perform                       |
 
-***chef_server_component_config***
+***maitred_component_config***
 
 A resource to allow individual configuration of each Chef Server component:
 
@@ -159,7 +159,7 @@ further details
 
 Syntax:
 
-    chef_server_component_config 'bookshelf' do
+    maitred_component_config 'bookshelf' do
       access_key_id '12345'
       secret_access_key 'abc123'
       vip 's3-test.amazonaws.com'

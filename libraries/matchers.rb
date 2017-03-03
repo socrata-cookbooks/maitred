@@ -22,10 +22,10 @@
 
 if defined?(ChefSpec)
   {
-    chef_server: %i[create remove],
-    chef_server_config: %i[create delete],
-    chef_server_component_config: %i[create delete],
-    chef_server_organization: %w[create remove]
+    maitred: %i[create remove],
+    maitred_config: %i[create delete],
+    maitred_component_config: %i[create delete],
+    maitred_organization: %w[create remove]
   }.each do |matcher, actions|
     ChefSpec.define_matcher(matcher)
 

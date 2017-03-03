@@ -23,8 +23,8 @@ describe 'maitred::default' do
   let(:converge) { runner.converge(described_recipe) }
 
   shared_examples_for 'any attributes' do
-    it 'creates a chef_server with the expected properties' do
-      expect(chef_run).to create_chef_server('default').with(
+    it 'creates a maitred with the expected properties' do
+      expect(chef_run).to create_maitred('default').with(
         version: version.nil? ? :latest : version,
         opscode_user: opscode_user.nil? ? 'opscode' : opscode_user,
         opscode_uid: opscode_uid.nil? ? 303 : opscode_uid,

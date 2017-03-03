@@ -20,7 +20,7 @@
 # limitations under the License.
 #
 
-chef_server 'default' do
+maitred 'default' do
   node['maitred']['app'].each do |k, v|
     send(k, v) unless v.nil?
   end
